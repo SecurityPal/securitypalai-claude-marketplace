@@ -1,5 +1,6 @@
 {
   "name": "securitypalai-claude-marketplace",
+  "description": "SecurityPal AI plugins for Knowledge Library Q&A, audits, and document coverage checks.",
   "owner": {
     "name": "SecurityPal",
     "email": "support@securitypalhq.com"
@@ -9,7 +10,6 @@
       "name": "securitypal-ai",
       "source": "./plugins/securitypal-ai",
       "description": "SecurityPal AI workflows for customer Knowledge Library Q&A, audits, and document coverage checks.",
-      "version": "0.1.1",
       "author": {
         "name": "SecurityPal",
         "email": "support@securitypalhq.com"
