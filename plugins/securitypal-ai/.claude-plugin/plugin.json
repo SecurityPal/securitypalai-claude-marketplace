@@ -2,11 +2,12 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "securitypal-ai",
   "displayName": "SecurityPal AI",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "SecurityPal AI workflows for customer Knowledge Library Q&A, audits, and document coverage checks.",
   "author": {
     "name": "SecurityPal",
-    "email": "support@securitypalhq.com"
+    "email": "eng@securitypalhq.com",
+    "url": "https://www.securitypalhq.com"
   },
   "homepage": "https://www.securitypalhq.com",
   "repository": "https://github.com/SecurityPal/securitypalai-claude-marketplace",
