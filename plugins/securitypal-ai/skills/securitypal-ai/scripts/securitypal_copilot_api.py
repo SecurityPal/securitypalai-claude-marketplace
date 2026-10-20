@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Helper CLI for SecurityPal AI public APIs."""
 
+# ruff: noqa: T201
+
 from __future__ import annotations
 
 import argparse
@@ -18,6 +20,8 @@ from dataclasses import dataclass
 from typing import Any
 
 DEFAULT_BASE_URL = "https://app.securitypalhq.com/api"
+PUBLIC_API_VERSION = "2026-08-07"
+PUBLIC_API_VERSION_HEADER = "X-API-Version"
 DEFAULT_PAGE_LIMIT = 50
 MAX_MARKDOWN_EXAMPLES = 10
 MAX_GAP_EXAMPLES = 5
@@ -94,6 +98,7 @@ def _request(
     headers = {
         "Authorization": f"Bearer {_token()}",
         "Accept": "application/json",
+        PUBLIC_API_VERSION_HEADER: PUBLIC_API_VERSION,
     }
     if payload is not None:
         filtered_payload = {k: v for k, v in payload.items() if v is not None}
@@ -113,7 +118,7 @@ def _request(
         )
         if not exit_on_error:
             raise error from exc
-        sys.stderr.write(json.dumps(error.as_dict(), indent=2, sort_keys=True) + "\n")
+        print(json.dumps(error.as_dict(), indent=2, sort_keys=True), file=sys.stderr)
         raise SystemExit(1) from exc
     except urllib.error.URLError as exc:
         if not exit_on_error:
@@ -137,7 +142,7 @@ def _maybe_json(body: str) -> Any:
 
 
 def _print_json(data: Any) -> None:
-    sys.stdout.write(json.dumps(data, indent=2, sort_keys=True) + "\n")
+    print(json.dumps(data, indent=2, sort_keys=True))
 
 
 def _jsonapi_data(response: Any) -> Any:
@@ -461,7 +466,7 @@ def _build_add_document_result(args: argparse.Namespace) -> dict[str, Any]:
     try:
         _upload_file_to_signed_url(upload_url, file_path)
     except ApiRequestError as error:
-        sys.stderr.write(json.dumps(error.as_dict(), indent=2, sort_keys=True) + "\n")
+        print(json.dumps(error.as_dict(), indent=2, sort_keys=True), file=sys.stderr)
         raise SystemExit(1) from error
 
     finalize_path = PUBLIC_DOCUMENT_FINALIZE_UPLOAD_PATH.format(library_id=library_id)
@@ -1470,7 +1475,7 @@ def _print_library_audit_markdown(audit: dict[str, Any]) -> None:
         if instruction_examples:
             lines.extend(["### Instruction Examples", "", *instruction_examples, ""])
 
-    sys.stdout.write("\n".join(lines).rstrip() + "\n")
+    print("\n".join(lines).rstrip())
 
 
 def _print_expired_documents_markdown(report: dict[str, Any]) -> None:
@@ -1525,7 +1530,7 @@ def _print_expired_documents_markdown(report: dict[str, Any]) -> None:
         if library.get("documents"):
             lines.append("")
 
-    sys.stdout.write("\n".join(lines).rstrip() + "\n")
+    print("\n".join(lines).rstrip())
 
 
 def build_parser() -> argparse.ArgumentParser:
